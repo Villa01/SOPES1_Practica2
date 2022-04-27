@@ -1,0 +1,9 @@
+version: "3"
+services:
+  gRPC: 
+    image : villa01/grpc_client
+    container_name: grpc_client
+    environment:
+      - HOST=192.168.0.3
+    ports:
+      - "3000:3000"
