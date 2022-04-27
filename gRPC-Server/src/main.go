@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 	"time"
-
+	"strconv"
 	"github.com/davidlux123/gRPC-service/src/producers"
 	pb "github.com/davidlux123/gRPC-service/src/proto"
 	"google.golang.org/grpc"
@@ -21,9 +21,9 @@ func (s *server) SendResultGame(ctx context.Context, in *pb.GameRequest) (*pb.Ga
 	log.Printf("id: %v, players: %v", in.GetGameId(), in.GetPlayers())
 	t := time.Now()
 	fecha := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
-	// resp := producers.SaveToKafka(in.GetGameId(), in.GetPlayers(), fecha)
-	resp := "{" + `"id":` + strconv.Itoa(int(in.GetGameId())) + "," + `"players":` + strconv.Itoa(int(in.GetPlayers())) + "," + `"date_game":` + fecha + "}"
-	return &pb.GameReply{Response_Game: resp}, nil
+	producers.SaveToKafka(in.GetGameId(), in.GetPlayers(), fecha)
+	resp2 := "{" + `"id":` + strconv.Itoa(int(in.GetGameId())) + "," + `"players":` + strconv.Itoa(int(in.GetPlayers())) + "," + `"date_game":` + fecha + "}"
+	return &pb.GameReply{Response_Game: resp2}, nil
 }
 
 func main() {

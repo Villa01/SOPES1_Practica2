@@ -33,7 +33,7 @@ spec:
           image: villa01/grpc_server
           env:
           - name: KAFKA_HOST
-            value: 
+            value: my-cluster-kafka-bootstrap.kafka
           ports:
             - containerPort: 50051
 ---

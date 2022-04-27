@@ -7,3 +7,5 @@ COPY . .
 EXPOSE 50051
 
 CMD ["go", "run", "src/main.go"]
+
+

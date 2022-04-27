@@ -19,7 +19,8 @@ func main() {
 		panic(err)
 	}
 
-	c.SubscribeTopics([]string{"games-topic"}, nil)
+	topic := os.Getenv("TOPIC")
+	c.SubscribeTopics([]string{topic}, nil)
 
 	for {
 		msg, err := c.ReadMessage(-1)

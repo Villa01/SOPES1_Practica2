@@ -8,6 +8,7 @@ import (
     "time"
 	"os"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
+	// "strconv"
 )
 
 type Result struct {
@@ -25,7 +26,7 @@ func SaveToKafka(gameId, players int32, date string) string {
 
 	// Produce messages to topic (asynchronously)
 	host := os.Getenv("KAFKA_HOST")
-	nvoProducer, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": host +"9092"})
+	nvoProducer, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": host})
 	if err != nil {
 		log.Fatalf("Error:no se pudo instanciar el producer :(. Error: %s", err.Error())
 		panic(err)
@@ -46,10 +47,10 @@ func getResult(gameId, players int32, date string) string {
 
 	//aca iria el if de los 5 juegos
 
-	rand.Seed(time.Now().UnixNano())
-    min := 1
-    max := 5
-    game := rand.Intn(max - min + 1) + min
+	// rand.Seed(time.Now().UnixNano())
+    // min := 1
+    // max := 5
+    // game := rand.Intn(max - min + 1) + min
 
 	rand.Seed(time.Now().Unix())
 	winner = rand.Intn(int(players))
@@ -57,7 +58,7 @@ func getResult(gameId, players int32, date string) string {
 	jsonBytes, err := json.Marshal(Result{
 		Game_id:   gameId,
 		Players:   players,
-		Game_name: "Juego" + game,
+		Game_name: "Juego",
 		Winner:    int32(winner),
 		Queue:     "kafka",
 		Date_game: date,

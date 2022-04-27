@@ -32,13 +32,13 @@ func GetCollection(collection string) *mongo.Collection {
 
 	host := os.Getenv("MONGO_HOST")
 
-	userName := "root"
-	pass := "password"
-	if userName == "" || pass == "" || host == "" {
-		panic("Error: No se pudo conectar con mongodb, credeciales invalidas en el entorno")
-	}
-	URI := "mongodb://" + userName + ":" + pass + "@" + host + ":27017"
-	client, err := mongo.NewClient(options.Client().ApplyURI(URI))
+	// userName := "root"
+	// pass := "password"
+	// if userName == "" || pass == "" || host == "" {
+	// 	panic("Error: No se pudo conectar con mongodb, credeciales invalidas en el entorno")
+	// }
+	// URI := "mongodb://" + userName + ":" + pass + "@" + host + ":27017"
+	client, err := mongo.NewClient(options.Client().ApplyURI(host))
 	if err != nil {
 		panic(err.Error())
 	}
@@ -50,8 +50,9 @@ func GetCollection(collection string) *mongo.Collection {
 	return client.Database("ProyectoF2").Collection(collection)
 }
 
-func InsertMongo(R string) (e error) {
 
+
+func InsertMongo(R string) (e error) {
 	var r Resul
 	err := json.Unmarshal([]byte(R), &r)
 	if err != nil {
@@ -67,6 +68,7 @@ func InsertMongo(R string) (e error) {
 		Datetime: r.Date_game,
 	}
 
+	// data := struct{data string}{R}
 	var coleccion = GetCollection("Logs")
 	coleccion.InsertOne(context.Background(), data)
 

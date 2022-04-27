@@ -1,4 +1,28 @@
-apiVersion: v1
-kind: Namespace
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: practica2-201900907
+  name: kafka-consumer
+  namespace: practica2-201900907
+  labels:
+    app: kafka-consumer
+spec:
+  selector:
+    matchLabels:
+      app: kafka-consumer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kafka-consumer
+    spec:
+      hostname: kafka-consumer
+      containers:
+        - name: grpc-client
+          image: villa01/kafka-consumer
+          env:
+          - name: HOST
+            value: my-cluster-kafka-bootstrap.kafka
+          - name: MONGO_HOST
+            value: 35.202.76.252
+          - name: TOPIC
+            value: games-topic
